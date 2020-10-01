@@ -1,0 +1,31 @@
+body{
+	background-color:white;
+	background: url(./bod.jpg) no-repeat;
+	width:100%;
+	height:100%;
+	background-size: cover;
+	background-attachment: fixed;
+	color:white;
+}
+li {
+    list-style-type: none;
+}
+.del{
+    display: inline-block;
+	float: right;
+	color: red;
+	cursor: pointer
+}
+.ed{
+	display: inline-block;
+}
+.card{
+	margin: 0 auto;
+}
+.error{
+	color: red;
+    font-weight: bold;
+}
+.title{
+	margin-left: 66px;
+}
