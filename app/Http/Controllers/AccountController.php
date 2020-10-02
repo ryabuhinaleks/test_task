@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-
+use App\Repositories\AccountRepository;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
+    protected $accountRepository;
+
+    public function __construct(AccountRepository $accountRepository)
+    {
+        $this->accountRepository = $accountRepository;
+    }
     /**
      * Display a listing of the account
      *
@@ -80,10 +84,7 @@ class AccountController extends Controller
             'email' => 'required|email',
         ],$customMessages);
 
-
-        $dataUser=$request->all();
-        $dataUser['password']=Hash::make($request->password);
-        User::find(Auth::User()->id)->update($dataUser);
+        $this->accountRepository->update(Auth::User()->id, $request);
     }
 
     /**

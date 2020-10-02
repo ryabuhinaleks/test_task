@@ -49,8 +49,9 @@
                 axios.put(`/accounts/${this.urldata.id}`,{ name: this.name, email: this.email ,password:this.password})
                 
                 .then((res) => {
+                    this.password= ''
                     this.message="Данные обновлены!"
-                        this.errors=[]
+                    this.errors=[]
                     
                     }).catch((err) => {
                         this.message=''

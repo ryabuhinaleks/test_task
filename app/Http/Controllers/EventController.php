@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\EventRepository;
 
 class EventController extends Controller
 {
+    protected $eventRepository;
+
+    public function __construct(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
     /**
      * Display a listing of the event.
      *
@@ -46,34 +54,34 @@ class EventController extends Controller
             'color' => 'required',
             'repeat' => 'min:2',
         ],$customMessages);
-            
-        $dataEvent= $request->all();
-        $dataEvent['user_id']=Auth::User()->id;
-        Event::create($dataEvent);
+        
+        $this->eventRepository->store($request);
     }
 
     /**
      * Display the specified event
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  array  $dataUser
+     * @return view
      */
     public function show($id)
     {
-        $data[]=Event::find($id);
-        $data[]=Event::find($id)->user;
-        return view('information',['dataUser'=>$data]); 
+        $dataUser = $this->eventRepository->show($id);
+        return view('information',['dataUser'=>$dataUser]); 
     }
 
     /**
      * Show the form for editing the specified event
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  array  $updateEvent
+     * @return view
      */
     public function edit($id)
     {
-        return view('update',['dataEvent' => Event::find($id)]);
+        $updateEvent=$this->eventRepository->getbyEvent($id);
+        return view('update',['dataEvent' =>  $updateEvent]);
     }
 
     /**
@@ -90,7 +98,7 @@ class EventController extends Controller
             'start' => 'required',
         ],['required' => 'Заполните поле']);
         
-        Event::find($id)->update($request->all());
+        $this->eventRepository->update($id,$request);
     }
 
     /**
@@ -101,6 +109,6 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        Event::find($id)->delete();
+        $this->eventRepository->delete($id);
     }
 }
