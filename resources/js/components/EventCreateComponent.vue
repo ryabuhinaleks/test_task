@@ -64,6 +64,10 @@
                         axios.post('/events',{ title: this.name, start: this.date, repeat:this.rad, color:this.color})   
                         .then((res) => {
                             this.message="Событие создано!"
+                            this.name= ''
+                            this.date= ''
+                            this.rad= "0"
+                            this.color= ''
                             this.errors=[]
                             }).catch((err) => {
                                 this.message=''

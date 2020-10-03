@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\CalendarRepository;
+use App\Repositories\Interfaces\CalendarRepositoryInterface;
 
 class CalendarController extends Controller
 {
 
-    protected $calendarRepository;
+    protected $calendarInterface;
 
-    public function __construct(CalendarRepository $calendarRepository)
+    public function __construct(CalendarRepositoryInterface $calendarInterface)
     {
-        $this->calendarRepository = $calendarRepository;
+        $this->calendarInterface = $calendarInterface;
     }
 
     /**
@@ -25,7 +25,6 @@ class CalendarController extends Controller
      */
     public function show($id)
     {        
-        $events=$this->calendarRepository->show($id);
-        return view('calendar',['events'=>$events, 'idUser'=>Auth::user()->id]);
+        return view('calendar',['events'=>$this->calendarInterface->show($id), 'idUser'=>Auth::user()->id]);
     }
 }

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\AccountRepository;
+use App\Repositories\Interfaces\AccountRepositoryInterface;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    protected $accountRepository;
+    protected $accountInterface;
 
-    public function __construct(AccountRepository $accountRepository)
+    public function __construct(AccountRepositoryInterface $accountInterface)
     {
-        $this->accountRepository = $accountRepository;
+        $this->accountInterface = $accountInterface;
     }
+    
     /**
      * Display a listing of the account
      *
@@ -71,7 +72,7 @@ class AccountController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function update(Request $request, $id)
     {
@@ -84,7 +85,7 @@ class AccountController extends Controller
             'email' => 'required|email',
         ],$customMessages);
 
-        $this->accountRepository->update(Auth::User()->id, $request);
+        $this->accountInterface->update(Auth::User()->id, $request);
     }
 
     /**
